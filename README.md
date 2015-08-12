@@ -4,7 +4,7 @@
 
 ## Installation
 
-* `npm install -g gulp bower jest-cli browserify`
+* `npm install -g gulp@3.8.11 bower jest-cli browserify`
 * `./frontendbuild.sh`
 
 ## Testing
