@@ -7,8 +7,9 @@ var _ = require('lodash');
 var Team = Store.backbone.Model.extend({
   name: 'Team',
   idAttribute: 'name',
+  showLoadingIcon: false,
   initialize: function() {
-    this.isAddingAsset = {}
+    this.isAddingAsset = {};
   },
   isMember: function( userId ) {
     var roles = this.get('roles');
@@ -56,15 +57,16 @@ var Team = Store.backbone.Model.extend({
     },
     TEAM_ADD_ASSET: function( action ) {
       this.isAddingAsset[action.resourceName] = true;
-      this.trigger('change');
+      this.set('showLoadingIcon', true);
       var that = this;
       common.teamAddAsset(action)
         .done(function( newTeamData ) {
+          that.isAddingAsset[action.resourceName] = false;
           that.set(newTeamData);
         })
         .always(function() {
           that.isAddingAsset[action.resourceName] = false;
-          that.trigger('change');
+          that.set('showLoadingIcon', false);
         });
     },
     TEAM_REMOVE_ASSET: function( action ) {
